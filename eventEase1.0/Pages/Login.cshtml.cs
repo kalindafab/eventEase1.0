@@ -1,5 +1,7 @@
 using System.Data.SqlClient;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +28,12 @@ namespace eventEase1._0.Pages
         public void OnGet()
         {
         }
+        private string HashPassword(string password)
+        {
+            using var sha256 = SHA256.Create();
+            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashedBytes);
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -41,17 +49,33 @@ namespace eventEase1._0.Pages
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT id, firstName, lastName, email, role, organization FROM Users WHERE email = @Email AND password = @Password";
+                    string query = "SELECT id, firstName, lastName, email, role, organization,status FROM Users WHERE email = @Email AND password = @Password";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Email", Email);
-                        command.Parameters.AddWithValue("@Password", Password);
+                        command.Parameters.AddWithValue("@Password", HashPassword(Password));
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
+                                string status = reader["status"].ToString();
+
+                               
+                                if (status == "pending")
+                                {
+                                    ModelState.AddModelError(string.Empty, "Your account is pending approval. Please wait for administrator approval or contact support.");
+                                    return Page();
+                                }
+
+                                
+                                if (status == "rejected")
+                                {
+                                    ModelState.AddModelError(string.Empty, "Your account registration was canceled. Please contact support for more information.");
+                                    return Page();
+                                }
+
                                 string userId = reader["id"].ToString();
                                 string firstName = reader["firstName"].ToString();
                                 string role = reader["role"].ToString();
@@ -63,7 +87,8 @@ namespace eventEase1._0.Pages
                                     new Claim(ClaimTypes.Name, email),
                                     new Claim("FirstName", firstName),
                                     new Claim(ClaimTypes.Role, role),
-                                    new Claim("Organization", organization)
+                                    new Claim("Organization", organization),
+                                    new Claim("Status", status)
                                 };
 
                          
