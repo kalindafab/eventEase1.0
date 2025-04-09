@@ -106,8 +106,6 @@
                 #sidebar .side-menu.top {
                     margin-top: 0;
                 }
-
-        /* CONTENT */
         #content {
             position: relative;
             width: calc(100% - 280px);
@@ -140,6 +138,7 @@
                 #content nav form {
                     display: flex;
                     align-items: center;
+                    
                 }
 
                     #content nav form .form-input {
@@ -166,60 +165,6 @@
                             color: var(--dark);
                         }
 
-                #content nav .switch-mode {
-                    width: 40px;
-                    height: 20px;
-                    background: var(--dark-grey);
-                    border-radius: 10px;
-                    position: relative;
-                    cursor: pointer;
-                }
-
-                    #content nav .switch-mode::before {
-                        content: '';
-                        position: absolute;
-                        width: 16px;
-                        height: 16px;
-                        background: var(--light);
-                        border-radius: 50%;
-                        top: 2px;
-                        left: 2px;
-                        transition: all 0.3s ease;
-                    }
-
-                #content nav #switch-mode:checked + .switch-mode::before {
-                    left: 22px;
-                }
-
-                #content nav .notification {
-                    position: relative;
-                    color: var(--dark);
-                    font-size: 20px;
-                }
-
-                    #content nav .notification .num {
-                        position: absolute;
-                        top: -5px;
-                        right: -5px;
-                        width: 20px;
-                        height: 20px;
-                        background: var(--danger);
-                        color: var(--light);
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 12px;
-                    }
-
-                #content nav .profile img {
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                }
-
-            /* MAIN */
             #content main {
                 padding: 20px;
             }
@@ -428,6 +373,17 @@
                             cursor: pointer;
                         }
 
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+     
+        .nav-search {
+            margin-left: auto;
+        }
+
        
     </style>
 </head>
@@ -563,7 +519,7 @@
                 <div class="welcome-message">
                     <span>Welcome, <strong>@Model.FirstName</strong></span>
                 </div>
-                <form action="#">
+                <form class="nav-search" action="#">
                     <div class="form-input">
                         <input type="search" placeholder="Search...">
                         <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>

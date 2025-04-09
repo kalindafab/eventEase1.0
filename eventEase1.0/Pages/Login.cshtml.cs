@@ -41,27 +41,22 @@ namespace eventEase1._0.Pages
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-
-                    // Select query to fetch user details by email and password
                     string query = "SELECT id, firstName, lastName, email, role, organization FROM Users WHERE email = @Email AND password = @Password";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Email", Email);
-                        command.Parameters.AddWithValue("@Password", Password);  // Note: In production, use password hashing
+                        command.Parameters.AddWithValue("@Password", Password);
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                // User found, retrieve details
                                 string userId = reader["id"].ToString();
                                 string firstName = reader["firstName"].ToString();
                                 string role = reader["role"].ToString();
                                 string organization = reader["organization"].ToString();
                                 string email = reader["email"].ToString();
-
-                                // Create claims for the user
                                 var claims = new List<Claim>
                                 {
                                     new Claim(ClaimTypes.NameIdentifier, userId),
@@ -71,23 +66,21 @@ namespace eventEase1._0.Pages
                                     new Claim("Organization", organization)
                                 };
 
-                                // Add permissions based on role
+                         
                                 AddRolePermissions(claims, role);
 
-                                // Create claims identity
+                            
                                 var claimsIdentity = new ClaimsIdentity(
                                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                                // Sign in the user
+                                
                                 await HttpContext.SignInAsync(
                                     CookieAuthenticationDefaults.AuthenticationScheme,
                                     new ClaimsPrincipal(claimsIdentity),
                                     new AuthenticationProperties
                                     {
-                                        IsPersistent = false // Set to true for "remember me" functionality
+                                        IsPersistent = false
                                     });
-
-                                // Redirect to the dashboard after successful login
                                 return RedirectToPage("Dashboard");
                             }
                             else
@@ -108,7 +101,6 @@ namespace eventEase1._0.Pages
 
         private void AddRolePermissions(List<Claim> claims, string role)
         {
-            // Add permissions based on the user's role
             switch (role.ToLower())
             {
                 case "admin":
@@ -117,7 +109,7 @@ namespace eventEase1._0.Pages
                     claims.Add(new Claim("Permission", "CanManageSettings"));
                     break;
 
-                case "event_manager":
+                case "manager":
                     claims.Add(new Claim("Permission", "CanCreateEvents"));
                     claims.Add(new Claim("Permission", "CanViewOwnEvents"));
                     claims.Add(new Claim("Permission", "CanViewTicketSales"));
@@ -129,7 +121,7 @@ namespace eventEase1._0.Pages
                     break;
             }
 
-            // Common permissions for all roles
+           
             claims.Add(new Claim("Permission", "CanManageProfile"));
         }
     }
