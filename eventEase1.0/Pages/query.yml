@@ -1,0 +1,30 @@
+﻿Query to create Users Table
+
+CREATE TABLE Users (
+    id CHAR(36) PRIMARY KEY, 
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) DEFAULT 'user' CHECK (role IN ('user', 'manager', 'admin')),
+    organization VARCHAR(255),  
+    status VARCHAR(20) DEFAULT 'approved' CHECK (status IN ('approved', 'pending', 'rejected'))
+);
+
+------------------------------------------------------------------------------------------------------
+Query to create Admin
+
+INSERT INTO Users (id, firstname, lastname, email, password, role, organization, status)
+VALUES (
+    NEWID(),  -- Generates a GUID in SQL Server
+    'Admin',  -- First name
+    'Admin',  -- Last name
+    'admin30@gmail.com',  -- Email
+    'admin123',  -- Plain text password (replace with your actual password)
+    'admin',  -- Role
+    'EventEase',  -- Organization
+    'approved'  -- Status
+);
+
+----------------------------------------------------------------------------------------------------
+

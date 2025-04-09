@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace eventEase1._0.Pages
 {
@@ -44,6 +46,13 @@ namespace eventEase1._0.Pages
 
         public void OnGet() { }
 
+        private string HashPassword(string password)
+        {
+            using var sha256 = SHA256.Create();
+            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashedBytes);
+        }
+
         public IActionResult OnPost()
         {
             if (Role == "manager" && string.IsNullOrEmpty(Organization))
@@ -65,13 +74,13 @@ namespace eventEase1._0.Pages
             {
                 string userId = Guid.NewGuid().ToString();
                 string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
+                string status = (Role == "manager") ? "pending" : "approved";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
-                    string query = "INSERT INTO Users (id, firstName, lastName, email, password, role, organization) " +
-                                 "VALUES (@Id, @FirstName, @LastName, @Email, @Password, @Role, @Organization)";
+                    string query = "INSERT INTO Users (id, firstName, lastName, email, password, role, organization,status) " +
+                                 "VALUES (@Id, @FirstName, @LastName, @Email, @Password, @Role, @Organization,@Status)";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -79,15 +88,21 @@ namespace eventEase1._0.Pages
                         command.Parameters.AddWithValue("@FirstName", FirstName);
                         command.Parameters.AddWithValue("@LastName", LastName);
                         command.Parameters.AddWithValue("@Email", Email);
-                        command.Parameters.AddWithValue("@Password", Password);
+                        command.Parameters.AddWithValue("@Password", HashPassword(Password));
                         command.Parameters.AddWithValue("@Role", Role);
                         command.Parameters.AddWithValue("@Organization",
                             string.IsNullOrEmpty(Organization) ? DBNull.Value : (object)Organization);
+                        command.Parameters.AddWithValue("@Status", status);
 
                         int result = command.ExecuteNonQuery();
 
                         if (result > 0)
                         {
+                            if (status == "pending")
+                            {
+                                TempData["Message"] = "Your manager account is pending approval";
+                                return RedirectToPage("PendingApproval"); 
+                            }
                             return RedirectToPage("Login");
                         }
                         else

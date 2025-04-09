@@ -15,7 +15,7 @@ namespace eventEase1._0.Pages
         {
             if (User.Identity.IsAuthenticated)
             {
-                // Get user details from claims
+              
                 FirstName = User.FindFirst("FirstName")?.Value ?? "User";
                 Role = User.FindFirst(ClaimTypes.Role)?.Value ?? "Guest";
                 Email = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
