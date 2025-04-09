@@ -1,4 +1,7 @@
 using System.Data.SqlClient;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +27,7 @@ namespace eventEase1._0.Pages
         {
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
@@ -45,7 +48,7 @@ namespace eventEase1._0.Pages
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Email", Email);
-                        command.Parameters.AddWithValue("@Password", Password);  // Ensure password is securely hashed in production
+                        command.Parameters.AddWithValue("@Password", Password);  // Note: In production, use password hashing
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -58,14 +61,33 @@ namespace eventEase1._0.Pages
                                 string organization = reader["organization"].ToString();
                                 string email = reader["email"].ToString();
 
-                                // Store user information in session or claims
-                                HttpContext.Session.SetString("UserId", userId);
-                                HttpContext.Session.SetString("FirstName", firstName);
-                                HttpContext.Session.SetString("Role", role);
-                                HttpContext.Session.SetString("Email", email);
-                                HttpContext.Session.SetString("Organization", organization);
+                                // Create claims for the user
+                                var claims = new List<Claim>
+                                {
+                                    new Claim(ClaimTypes.NameIdentifier, userId),
+                                    new Claim(ClaimTypes.Name, email),
+                                    new Claim("FirstName", firstName),
+                                    new Claim(ClaimTypes.Role, role),
+                                    new Claim("Organization", organization)
+                                };
 
-                                // Redirect to the dashboard or home page after successful login
+                                // Add permissions based on role
+                                AddRolePermissions(claims, role);
+
+                                // Create claims identity
+                                var claimsIdentity = new ClaimsIdentity(
+                                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                                // Sign in the user
+                                await HttpContext.SignInAsync(
+                                    CookieAuthenticationDefaults.AuthenticationScheme,
+                                    new ClaimsPrincipal(claimsIdentity),
+                                    new AuthenticationProperties
+                                    {
+                                        IsPersistent = false // Set to true for "remember me" functionality
+                                    });
+
+                                // Redirect to the dashboard after successful login
                                 return RedirectToPage("Dashboard");
                             }
                             else
@@ -84,5 +106,31 @@ namespace eventEase1._0.Pages
             return Page();
         }
 
+        private void AddRolePermissions(List<Claim> claims, string role)
+        {
+            // Add permissions based on the user's role
+            switch (role.ToLower())
+            {
+                case "admin":
+                    claims.Add(new Claim("Permission", "CanApproveManagers"));
+                    claims.Add(new Claim("Permission", "CanManageUsers"));
+                    claims.Add(new Claim("Permission", "CanManageSettings"));
+                    break;
+
+                case "event_manager":
+                    claims.Add(new Claim("Permission", "CanCreateEvents"));
+                    claims.Add(new Claim("Permission", "CanViewOwnEvents"));
+                    claims.Add(new Claim("Permission", "CanViewTicketSales"));
+                    break;
+
+                case "user":
+                    claims.Add(new Claim("Permission", "CanBrowseEvents"));
+                    claims.Add(new Claim("Permission", "CanViewOwnTickets"));
+                    break;
+            }
+
+            // Common permissions for all roles
+            claims.Add(new Claim("Permission", "CanManageProfile"));
+        }
     }
 }

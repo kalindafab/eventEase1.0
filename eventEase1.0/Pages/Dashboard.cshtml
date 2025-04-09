@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-    <title>AdminHub</title>
+    <title>Dashboard</title>
     <style>
         /* Main CSS */
         :root {
@@ -433,52 +433,119 @@
 </head>
 <body>
     <!-- SIDEBAR -->
+    
     <section id="sidebar">
         <a href="#" class="brand">
             <i class='bx bxs-smile'></i>
             <span class="text">EventEase</span>
         </a>
+
         <ul class="side-menu top">
+            <!-- Dashboard - visible to all authenticated users -->
             <li class="active">
-                <a href="#">
+                <a href="/Dashboard">
                     <i class='bx bxs-dashboard'></i>
                     <span class="text">Dashboard</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-shopping-bag-alt'></i>
-                    <span class="text"> Create Events</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-doughnut-chart'></i>
-                    <span class="text">Users</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-message-dots'></i>
-                    <span class="text">Message</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-group'></i>
-                    <span class="text">Team</span>
-                </a>
-            </li>
+
+            <!-- Admin Permissions -->
+            @if (User.HasClaim("Permission", "CanApproveManagers"))
+            {
+                <li>
+                    <a href="/Admin/ApproveManagers">
+                        <i class='bx bxs-user-check'></i>
+                        <span class="text">Approve Managers</span>
+                    </a>
+                </li>
+            }
+
+            @if (User.HasClaim("Permission", "CanManageUsers"))
+            {
+                <li>
+                    <a href="/Admin/Users">
+                        <i class='bx bxs-group'></i>
+                        <span class="text">Manage Users</span>
+                    </a>
+                </li>
+            }
+
+            @if (User.HasClaim("Permission", "CanManageSettings"))
+            {
+                <li>
+                    <a href="/Admin/Settings">
+                        <i class='bx bxs-cog'></i>
+                        <span class="text">System Settings</span>
+                    </a>
+                </li>
+            }
+
+            <!-- Event Manager Permissions -->
+            @if (User.HasClaim("Permission", "CanCreateEvents"))
+            {
+                <li>
+                    <a href="/Manager/CreateEvent">
+                        <i class='bx bxs-calendar-plus'></i>
+                        <span class="text">Create Event</span>
+                    </a>
+                </li>
+            }
+
+            @if (User.HasClaim("Permission", "CanViewOwnEvents"))
+            {
+                <li>
+                    <a href="/Manager/MyEvents">
+                        <i class='bx bxs-calendar'></i>
+                        <span class="text">My Events</span>
+                    </a>
+                </li>
+            }
+
+            @if (User.HasClaim("Permission", "CanViewTicketSales"))
+            {
+                <li>
+                    <a href="/Manager/Tickets">
+                        <i class='bx bxs-ticket'></i>
+                        <span class="text">Ticket Sales</span>
+                    </a>
+                </li>
+            }
+
+            <!-- Regular User Permissions -->
+            @if (User.HasClaim("Permission", "CanBrowseEvents"))
+            {
+                <li>
+                    <a href="/User/Events">
+                        <i class='bx bxs-calendar-event'></i>
+                        <span class="text">Browse Events</span>
+                    </a>
+                </li>
+            }
+
+            @if (User.HasClaim("Permission", "CanViewOwnTickets"))
+            {
+                <li>
+                    <a href="/User/Tickets">
+                        <i class='bx bxs-ticket'></i>
+                        <span class="text">My Tickets</span>
+                    </a>
+                </li>
+            }
         </ul>
+
+        <!-- Common items for all users -->
         <ul class="side-menu">
+            @if (User.HasClaim("Permission", "CanManageProfile"))
+            {
+                <li>
+                    <a href="/Account/Settings">
+                        <i class='bx bxs-cog'></i>
+                        <span class="text">Settings</span>
+                    </a>
+                </li>
+            }
             <li>
-                <a href="#">
-                    <i class='bx bxs-cog'></i>
-                    <span class="text">Settings</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="logout">
+                <a href="/Account/Logout" class="logout">
                     <i class='bx bxs-log-out-circle'></i>
                     <span class="text">Logout</span>
                 </a>
@@ -494,7 +561,7 @@
             <div class="nav-left">
                 <i class='bx bx-menu'></i>
                 <div class="welcome-message">
-                    <span>Welcome, <strong>Admin</strong></span>
+                    <span>Welcome, <strong>@Model.FirstName</strong></span>
                 </div>
                 <form action="#">
                     <div class="form-input">
