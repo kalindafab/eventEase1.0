@@ -1,0 +1,185 @@
+﻿@page
+@model eventEase1._0.Pages.SignupModel
+@{
+    ViewData["Title"] = "Signup";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventEase | Signup Page</title>
+
+    <style>
+        body {
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .login-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .login-btn {
+            background-color: #0d6efd;
+            color: white;
+            width: 100%;
+        }
+
+            .login-btn:hover {
+                background-color: #0a58ca;
+            }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .login-image {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .forgot-password {
+            color: #0d6efd;
+            text-decoration: none;
+        }
+
+            .forgot-password:hover {
+                text-decoration: underline;
+            }
+
+        #organizationField {
+            display: none;
+        }
+    </style>
+
+    <script>
+        function toggleOrganizationField() {
+            var role = document.getElementById("roleSelect").value;
+            var organizationField = document.getElementById("organizationField");
+
+            if (role === "manager") {
+                organizationField.style.display = "block";  // Show the organization field if "Manager" is selected
+            } else {
+                organizationField.style.display = "none";  // Hide it otherwise
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container login-container">
+        <div class="row align-items-center">
+            <!-- Left Side: Image -->
+            <div class="col-md-6 text-center d-none d-md-block">
+                <img src="~/images/undraw_sign-up_z2ku.svg" alt="signup Image" class="login-image">
+            </div>
+
+            <!-- Right Side: Signup Form -->
+            <div class="col-md-6">
+                <div class="login-card">
+                    <h2 class="text-center fw-bold mb-4">Signup</h2>
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                    <form method="post">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="form-label">First Name</label>
+                                <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="LastName" class="form-label">Last Name</label>
+                                <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email Address</label>
+                            <input asp-for="Email" class="form-control" placeholder=" Email" />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Password</label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder=" password" />
+                        </div>
+                        <!-- Role Dropdown -->
+                        <div class="mb-3">
+                            <label asp-for="Role" class="form-label">Role</label>
+                            <select asp-for="Role" id="roleSelect" class="form-control" onchange="toggleOrganizationField()">
+                                <option value="">-- Select Role --</option>
+                                <option value="user">User</option>
+                                <option value="manager">Manager</option>
+                            </select>
+                            <span asp-validation-for="Role" class="text-danger"></span>
+                        </div>
+
+                        <!-- Organization Name Field (only shown for Manager) -->
+                        <div class="mb-3" id="organizationField" style="display: none;">
+                            <label asp-for="Organization" class="form-label">Organization Name</label>
+                            <input asp-for="Organization" class="form-control" placeholder="Enter your Organization Name" />
+                            <span asp-validation-for="Organization" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn login-btn mt-3">Signup</button>
+                    </form>
+                    <p class="text-center mt-3">Already have an account? <a href="login" class="forgot-password">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleOrganizationField() {
+            var role = document.getElementById("roleSelect").value;
+            var organizationField = document.getElementById("organizationField");
+            var organizationInput = document.querySelector("#organizationField input");
+
+            if (role === "manager") {
+                organizationField.style.display = "block";
+                organizationInput.setAttribute("data-val", "true");
+                organizationInput.setAttribute("data-val-required", "Organization is required for managers");
+            } else {
+                organizationField.style.display = "none";
+                organizationInput.removeAttribute("data-val");
+                organizationInput.removeAttribute("data-val-required");
+                // Clear any existing validation message
+                document.querySelector("#organizationField .text-danger").textContent = "";
+                // Clear the input value
+                organizationInput.value = "";
+            }
+             $.validator.unobtrusive.parse('form');
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleOrganizationField();
+        });
+    </script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
