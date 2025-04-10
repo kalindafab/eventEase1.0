@@ -384,6 +384,34 @@
             margin-left: auto;
         }
 
+        .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .status.completed {
+                background: var(--light-success);
+                color: var(--success);
+            }
+
+            .status.pending {
+                background: var(--light-danger);
+                color: var(--danger);
+            }
+
+            .status:hover {
+                opacity: 0.8;
+                transform: translateY(-1px);
+            }
+
+        table td form {
+            display: inline-block;
+        }
        
     </style>
 </head>
@@ -532,7 +560,77 @@
         </nav>
         <!-- NAVBAR -->
         <!-- MAIN -->
-        
+        <!-- MAIN -->
+        <main>
+            @if (User.HasClaim("Permission", "CanApproveManagers") && Model.PendingManagers.Any())
+            {
+                <div class="table-data">
+                    <div>
+                        <div class="head">
+                            <h3>Pending Manager Approvals</h3>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Organization</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var manager in Model.PendingManagers)
+                                {
+                                    <tr>
+                                        <td>@manager.FirstName @manager.LastName</td>
+                                        <td>@manager.Email</td>
+                                        <td>@manager.Organization</td>
+                                        <td>
+                                            <form method="post" style="display: inline;">
+                                                <input type="hidden" name="managerId" value="@manager.Id" />
+                                                <button type="submit" asp-page-handler="ApproveManager"
+                                                        class="status completed">
+                                                    Approve
+                                                </button>
+                                            </form>
+                                            <form method="post" style="display: inline; margin-left: 5px;">
+                                                <input type="hidden" name="managerId" value="@manager.Id" />
+                                                <button type="submit" asp-page-handler="RejectManager"
+                                                        class="status pending">
+                                                    Reject
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+
+            @if (User.HasClaim("Permission", "CanBrowseEvents"))
+            {
+                <div class="box-info">
+                    <li>
+                        <i class='bx bxs-calendar-event'></i>
+                        <div class="text">
+                            <h3>Browse Events</h3>
+                            <p>Discover upcoming events</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class='bx bxs-ticket'></i>
+                        <div class="text">
+                            <h3>My Tickets</h3>
+                            <p>View your purchased tickets</p>
+                        </div>
+                    </li>
+                </div>
+            }
+
+         
+        </main>
         <!-- MAIN -->
     </section>
     <!-- CONTENT -->
