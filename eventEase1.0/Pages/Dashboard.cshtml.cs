@@ -22,7 +22,9 @@ namespace eventEase1._0.Pages
                 Organization = User.FindFirst("Organization")?.Value ?? string.Empty;
             }
         }
+
     }
+
 
 }
 
