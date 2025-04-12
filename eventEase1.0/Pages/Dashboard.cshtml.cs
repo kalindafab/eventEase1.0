@@ -98,7 +98,14 @@ namespace eventEase1._0.Pages
     }
 
 
-
+    public class PendingManager
+    {
+        public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Organization { get; set; }
+    }
 }
 
 
