@@ -529,7 +529,7 @@
                 </li>
             }
             <li>
-                <a href="/Account/Logout" class="logout">
+                <a href="/Logout" class="logout">
                     <i class='bx bxs-log-out-circle'></i>
                     <span class="text">Logout</span>
                 </a>
@@ -636,18 +636,7 @@
     <!-- CONTENT -->
 
     <script>
-       
-
-        // Dark mode toggle (just UI, no actual dark mode implementation)
-        document.getElementById('switch-mode').addEventListener('change', function() {
-            if(this.checked) {
-                document.body.classList.add('dark');
-            } else {
-                document.body.classList.remove('dark');
-            }
-        });
-
-        // Simple todo interaction
+      
         document.querySelectorAll('.todo-list li').forEach(item => {
             item.addEventListener('click', function(e) {
                 if(e.target.tagName !== 'I') {
