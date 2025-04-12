@@ -1,0 +1,28 @@
+﻿@page
+@model eventEase1._0.Pages.myEventsModel
+@{
+	Layout = "_layoutDashboard";
+	ViewData["Title"] = "myEvents";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Card Section -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <!-- Image for the Event -->
+                <img src="@Model.EventImage" class="card-img-top" alt="Event Image" style="height: 200px; object-fit: cover;">
+
+                <div class="card-body">
+                    <h5 class="card-title">@Model.EventTitle</h5>
+                    <p class="card-text">@Model.EventDescription</p>
+                    <p class="card-text">
+                        <strong>Date:</strong> @Model.EventDate.ToString("MMMM dd, yyyy") <br>
+                        <strong>Location:</strong> @Model.EventLocation
+                    </p>
+                    <a href="@Url.Page("/EventDetails", new { eventId = Model.EventId })" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

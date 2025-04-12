@@ -1,0 +1,81 @@
+﻿@page
+@model eventEase1._0.Pages.createEventModel
+@{
+    Layout = "_layoutDashboard";
+    ViewData["Title"] = "manager/createEvent";
+}
+<head>
+    
+<style>
+    
+ 
+</style>
+</head>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (ViewData.ModelState.ErrorCount > 0)
+        {
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+        <div class="col-md-6 col-lg-5">
+            <h2 class="text-center mb-4">Create Event</h2>
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="EventName" class="form-label">Event Name</label>
+                    <input type="text" class="form-control form-control-sm" id="EventName" name="Name" required />
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="EventPrice" class="form-label">Ticket Price</label>
+                        <input type="number" class="form-control form-control-sm" id="EventPrice" name="price" required />
+                    </div>
+                    <div class="col">
+                        <label for="EventTickets" class="form-label">Available Tickets</label>
+                        <input type="number" class="form-control form-control-sm" id="EventTickets" name="tickets" required />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="EventDate" class="form-label">Event Date</label>
+                        <input type="date" class="form-control form-control-sm" id="EventDate" name="eventDate" required />
+                    </div>
+                    <div class="col">
+                        <label for="EventLocation" class="form-label">Avenue (Location)</label>
+                        <input type="text" class="form-control form-control-sm" id="EventLocation" name="location" placeholder="ex: district, Country" required />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="EventImage" class="form-label">Event Image</label>
+                    <input class="form-control form-control-sm" type="file" id="EventImage" name="EventImage" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="EventDescription" class="form-label">Event Description</label>
+                    <textarea class="form-control form-control-sm" id="EventDescription" name="EventDescription" rows="4" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-sm btn-primary w-100">Create Event</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+

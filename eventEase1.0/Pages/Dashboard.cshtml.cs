@@ -94,7 +94,9 @@ namespace eventEase1._0.Pages
                 }
             }
         }
+
     }
+
 
     public class PendingManager
     {
