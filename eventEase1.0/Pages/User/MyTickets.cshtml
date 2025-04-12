@@ -1,0 +1,79 @@
+﻿@page
+@model eventEase1._0.Pages.User.MyTicketsModel
+@{
+    ViewData["Title"] = "My Tickets";
+}
+
+<div class="container">
+    <h1>My Tickets</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    @if (Model.Tickets.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Organizer</th>
+                        <th>Purchase Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <tr>
+                            <td>@ticket.EventName</td>
+                            <td>@ticket.EventDate.ToString("f")</td>
+                            <td>@ticket.Location</td>
+                            <td>@ticket.Organizer</td>
+                            <td>@ticket.PurchaseDate.ToString("g")</td>
+                            <td>
+                                @if (ticket.Status == "confirmed")
+                                {
+                                    <span class="badge badge-success">Confirmed</span>
+                                }
+                                else if (ticket.Status == "cancelled")
+                                {
+                                    <span class="badge badge-danger">Cancelled</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-warning">@ticket.Status</span>
+                                }
+                            </td>
+                            <td>
+                                @if (ticket.Status == "confirmed" && ticket.EventDate > DateTime.Now)
+                                {
+                                    <form method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="ticketId" value="@ticket.Id" />
+                                        <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            You don't have any tickets yet. <a href="/User/BrowseEvents">Browse events</a> to register.
+        </div>
+    }
+</div>

@@ -499,7 +499,7 @@
             @if (User.HasClaim("Permission", "CanBrowseEvents"))
             {
                 <li>
-                    <a href="/User/Events">
+                    <a href="/User/BrowseEvents">
                         <i class='bx bxs-calendar-event'></i>
                         <span class="text">Browse Events</span>
                     </a>
@@ -509,7 +509,7 @@
             @if (User.HasClaim("Permission", "CanViewOwnTickets"))
             {
                 <li>
-                    <a href="/User/Tickets">
+                    <a href="/User/MyTickets">
                         <i class='bx bxs-ticket'></i>
                         <span class="text">My Tickets</span>
                     </a>

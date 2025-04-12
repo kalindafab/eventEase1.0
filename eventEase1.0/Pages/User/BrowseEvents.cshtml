@@ -1,0 +1,87 @@
+﻿@page
+@model eventEase1._0.Pages.User.BrowseEventsModel
+@{
+    ViewData["Title"] = "Browse Events";
+}
+
+<div class="container">
+    <h1>Browse Events</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="get" class="form-inline">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="searchTerm" placeholder="Search events..." value="@Request.Query["searchTerm"]">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form method="get" class="form-inline float-right">
+                <div class="input-group">
+                    <select class="form-control" name="category" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        <option value="Conference" selected="@(Request.Query["category"] == "Conference")">Conference</option>
+                        <option value="Workshop" selected="@(Request.Query["category"] == "Workshop")">Workshop</option>
+                        <option value="Concert" selected="@(Request.Query["category"] == "Concert")">Concert</option>
+                        <option value="Sports" selected="@(Request.Query["category"] == "Sports")">Sports</option>
+                        <option value="Exhibition" selected="@(Request.Query["category"] == "Exhibition")">Exhibition</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var eventItem in Model.Events)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">@eventItem.Name</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@eventItem.Description</p>
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item"><strong>Organizer:</strong> @eventItem.Organizer</li>
+                            <li class="list-group-item"><strong>Date:</strong> @eventItem.StartDate.ToString("f") - @eventItem.EndDate.ToString("t")</li>
+                            <li class="list-group-item"><strong>Location:</strong> @eventItem.Location</li>
+                            <li class="list-group-item"><strong>Price:</strong> $@eventItem.Price.ToString("0.00")</li>
+                            <li class="list-group-item"><strong>Category:</strong> @eventItem.Category</li>
+                            <li class="list-group-item">
+                                <strong>Availability:</strong>
+                                @(eventItem.Capacity - Model.GetRegisteredCount(eventItem.Id)) of @eventItem.Capacity seats left
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <!-- Add the Anti-Forgery Token here -->
+                        <form method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="eventId" value="@eventItem.Id" />
+                            <button type="submit" class="btn btn-success btn-block">Register Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (!Model.Events.Any())
+        {
+            <div class="col-12">
+                <div class="alert alert-info">No events found matching your criteria.</div>
+            </div>
+        }
+    </div>
+</div>
