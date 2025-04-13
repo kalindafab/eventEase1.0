@@ -1,0 +1,67 @@
+﻿@page
+@model eventEase1._0.Pages.UpdateEventModel
+@{
+	Layout = "_layoutDashboard";
+	ViewData["Title"] = "updateEvent";
+}
+
+<div class="container mt-5">
+    <div class="card shadow rounded-3 p-4">
+        <h2 class="text-center mb-4">Update Event</h2>
+
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="EventId" />
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Event Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label">Ticket Price</label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Tickets" class="form-label">Total Tickets</label>
+                <input asp-for="Tickets" class="form-control" type="number" />
+                <span asp-validation-for="Tickets" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EventDate" class="form-label">Event Date</label>
+                <input asp-for="EventDate" class="form-control" type="datetime-local" />
+                <span asp-validation-for="EventDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Location" class="form-label">Location</label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EventDescription" class="form-label">Description</label>
+                <textarea asp-for="EventDescription" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="EventDescription" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EventImage" class="form-label">Event Image (optional)</label>
+                <input asp-for="EventImage" class="form-control" type="file" />
+                <span asp-validation-for="EventImage" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a asp-page="/myEvents" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Update Event</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* @section Scripts { *@
+@*     <partial name="_ValidationScriptsPartial" /> *@
+@* } *@
