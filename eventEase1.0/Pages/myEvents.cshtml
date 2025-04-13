@@ -1,28 +1,43 @@
 ﻿@page
 @model eventEase1._0.Pages.myEventsModel
 @{
-	Layout = "_layoutDashboard";
-	ViewData["Title"] = "myEvents";
+    Layout = "_layoutDashboard";
+    ViewData["Title"] = "My Events";
 }
 
 <div class="container mt-5">
     <div class="row">
-        <!-- Card Section -->
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <!-- Image for the Event -->
-                <img src="@Model.EventImage" class="card-img-top" alt="Event Image" style="height: 200px; object-fit: cover;">
-
-                <div class="card-body">
-                    <h5 class="card-title">@Model.EventTitle</h5>
-                    <p class="card-text">@Model.EventDescription</p>
-                    <p class="card-text">
-                        <strong>Date:</strong> @Model.EventDate.ToString("MMMM dd, yyyy") <br>
-                        <strong>Location:</strong> @Model.EventLocation
-                    </p>
-                    <a href="@Url.Page("/EventDetails", new { eventId = Model.EventId })" class="btn btn-primary">Learn More</a>
-                </div>
+        @if (Model.UserEvents.Count == 0)
+        {
+            <div class="col-12">
+                <div class="alert alert-info text-center">No events created yet.</div>
             </div>
-        </div>
+        }
+        else
+        {
+            @foreach (var evt in Model.UserEvents)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <img src="~/images/@evt.ImagePath" class="card-img-top" alt="@evt.Name" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@evt.Name</h5>
+                            <p class="card-text">
+                                <strong>Location:</strong> @evt.Location <br>
+                                <strong>Price:</strong> @evt.Price.ToString("C") <br>
+                                <strong>Date:</strong> @evt.EventDate.ToString("MMMM dd, yyyy") <br>
+                                <strong>Total Tickets:</strong> @evt.TotalTickets <br>
+                                <strong>Available Tickets:</strong> @evt.Tickets <br>
+                                <strong>Sold Tickets:</strong> @evt.SoldTickets
+                            </p>
+                            <div class="mt-auto">
+                                <a href="@Url.Page("/UpdateEvent", new { id = @evt.Id })" class="btn btn-outline-warning w-100">Edit</a>
+                                <a href="/DeleteEvent?id=@evt.Id" class="btn btn-outline-danger w-100">Remove</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     </div>
 </div>

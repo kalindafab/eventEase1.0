@@ -28,3 +28,24 @@ VALUES (
 
 ----------------------------------------------------------------------------------------------------
 
+Query to create event Table
+
+CREATE TABLE Events (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    Name NVARCHAR(100) NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    Tickets INT NOT NULL,
+    EventDate DATE NOT NULL,
+    Location NVARCHAR(255) NOT NULL,
+    ImagePath NVARCHAR(255),
+    Description NVARCHAR(MAX),
+    UserId CHAR(36) NOT NULL,
+
+    CONSTRAINT FK_Events_Users FOREIGN KEY (UserId)
+        REFERENCES Users(id)
+        ON DELETE CASCADE
+);
+
+NB!!!!! Forgot to add status for events like (Available, Soldout, Cancelled) so that when the tickets
+when all tickets are purchased we can have differences.
+

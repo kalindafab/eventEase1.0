@@ -64,8 +64,8 @@
             <form class="d-flex" method="get" asp-page="/Events">
                 <input class="form-control me-2" type="search" name="search" placeholder="Search">
                 <button class="btn btn-outline-primary me-2" type="submit">Search</button>
-                <a asp-page="/Login" class="btn btn-primary">Get Started</a>
             </form>
+            <a asp-page="/Login" class="btn btn-primary">Get Started</a>
         </div>
     </nav>
 
@@ -74,10 +74,8 @@
         <h2 class="text-center fw-bold mb-4">Upcoming Events</h2>
         <div class="text-center mb-3">
             <select id="eventFilter" class="form-select w-auto d-inline-block">
-                <option value="all">All Categories</option>
-                <option value="music">Music</option>
-                <option value="tech">Tech</option>
-                <option value="sports">Sports</option>
+                <option value="all">All Events</option>
+                <option value="nearby">NearBy events</option>
             </select>
         </div>
     </div>
@@ -85,127 +83,27 @@
     <!-- Events cards -->
     <div class="container my-5">
         <div class="row">
-            <!-- Event Card 1 -->
-            <div class="col-md-4 mb-4">
-                <div class="card event-card">
-                    <img src="~/images/undraw_events_0w4f.svg" class="card-img-top" alt="Event Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Live Music Festival</h5>
-                        <p class="card-text">An amazing night of live music.</p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal1">Details</button>
-                        <a asp-page="/Payment" class="btn btn-success">Buy Ticket</a>
+            <!-- Event Cards -->
+            @foreach (var evt in Model.EventItem)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card event-card">
+                        <img src="~/images/@evt.ImagePath" class="card-img-top" alt="@evt.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@evt.Name</h5>
+                            <p class="card-text">@evt.Location</p>
+                            <p class="card-text"><strong>Price:</strong> @evt.Price RWF</p>
+                            <a asp-page="/EventDetails" asp-route-id="@evt.Id" class="btn btn-primary">Details</a>
+                            <a asp-page="/Payment" asp-route-eventId="@evt.Id" class="btn btn-success">Buy Ticket</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
 
-            <!-- Event Card 2 -->
-            <div class="col-md-4 mb-4">
-                <div class="card event-card">
-                    <img src="~/images/undraw_events_0w4f.svg" class="card-img-top" alt="Event Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Tech Conference 2025</h5>
-                        <p class="card-text">The latest innovations in tech.</p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal2">Details</button>
-                        <a asp-page="/Payment" class="btn btn-success">Buy Ticket</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Event Card 3 -->
-            <div class="col-md-4 mb-4">
-                <div class="card event-card">
-                    <img src="~/images/undraw_events_0w4f.svg" class="card-img-top" alt="Event Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Marathon Championship</h5>
-                        <p class="card-text">Join the city's largest marathon.</p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal3">Details</button>
-                        <a asp-page="/Payment" class="btn btn-success">Buy Ticket</a>
-                    </div>
-                </div>
-            </div>
+            
         </div>
 
-        <div class="row">
-            <!-- Event Card 4 -->
-            <div class="col-md-4 mb-4">
-                <div class="card event-card">
-                    <img src="~/images/undraw_events_0w4f.svg" class="card-img-top" alt="Event Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Live Music Festival</h5>
-                        <p class="card-text">An amazing night of live music.</p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal4">Details</button>
-                        <a asp-page="/Payment" class="btn btn-success">Buy Ticket</a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Event Card 5 -->
-            <div class="col-md-4 mb-4">
-                <div class="card event-card">
-                    <img src="~/images/undraw_events_0w4f.svg" class="card-img-top" alt="Event Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Tech Conference 2025</h5>
-                        <p class="card-text">The latest innovations in tech.</p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal5">Details</button>
-                        <a asp-page="/Payment" class="btn btn-success">Buy Ticket</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Event Card 6 -->
-            <div class="col-md-4 mb-4">
-                <div class="card event-card">
-                    <img src="~/images/undraw_events_0w4f.svg" class="card-img-top" alt="Event Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Marathon Championship</h5>
-                        <p class="card-text">Join the city's largest marathon.</p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal6">Details</button>
-                        <a asp-page="/Payment" class="btn btn-success">Buy Ticket</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Event Card 7 -->
-            <div class="col-md-4 mb-4">
-                <div class="card event-card">
-                    <img src="~/images/undraw_events_0w4f.svg" class="card-img-top" alt="Event Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Live Music Festival</h5>
-                        <p class="card-text">An amazing night of live music.</p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal7">Details</button>
-                        <a asp-page="/Payment" class="btn btn-success">Buy Ticket</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Event Card 8 -->
-            <div class="col-md-4 mb-4">
-                <div class="card event-card">
-                    <img src="~/images/undraw_events_0w4f.svg" class="card-img-top" alt="Event Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Tech Conference 2025</h5>
-                        <p class="card-text">The latest innovations in tech.</p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal8">Details</button>
-                        <a asp-page="/Payment" class="btn btn-success">Buy Ticket</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Event Card 9 -->
-            <div class="col-md-4 mb-4">
-                <div class="card event-card">
-                    <img src="~/images/undraw_events_0w4f.svg" class="card-img-top" alt="Event Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Marathon Championship</h5>
-                        <p class="card-text">Join the city's largest marathon.</p>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal9">Details</button>
-                        <a asp-page="/Payment" class="btn btn-success">Buy Ticket</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Event Modal 1 -->
@@ -278,9 +176,5 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
 </body>
 </html>
