@@ -5,6 +5,24 @@
     ViewData["Title"] = "My Events";
 }
 
+<nav>
+    <!-- Left side elements -->
+    <div class="nav-left">
+        <i class='bx bx-menu'></i>
+        <div class="welcome-message">
+            <span>Welcome, <strong>@Model.FirstName</strong></span>
+
+        </div>
+        <form class="nav-search" action=" ">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+            </div>
+        </form>
+    </div>
+
+</nav>
+
 <div class="container mt-5">
     <div class="row">
         @if (Model.UserEvents.Count == 0)
