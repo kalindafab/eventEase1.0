@@ -8,6 +8,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using System.Data;
+using System.Security.Claims;
 
 namespace eventEase1._0.Pages
 {
@@ -51,7 +53,8 @@ namespace eventEase1._0.Pages
         [Required]
         public string EventDescription { get; set; }
 
-        public void OnGet() { }
+        public void OnGet() 
+        {}
 
         public async Task<IActionResult> OnPostAsync()
         {

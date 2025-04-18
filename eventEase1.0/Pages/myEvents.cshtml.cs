@@ -5,11 +5,22 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Security.Claims;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace eventEase1._0.Pages
 {
+
+
     public class myEventsModel : PageModel
     {
+        public string FirstName { get; set; }
+        public string Role { get; set; }
+        public string Email { get; set; }
+        public string Organization { get; set; }
+
         private readonly IConfiguration _configuration;
 
         public myEventsModel(IConfiguration configuration)
@@ -19,7 +30,8 @@ namespace eventEase1._0.Pages
 
         public List<EventItem> UserEvents { get; set; } = new List<EventItem>();
 
-        public class EventItem
+        
+public class EventItem
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
@@ -30,11 +42,20 @@ namespace eventEase1._0.Pages
             public string ImagePath { get; set; }
             public int SoldTickets => TotalTickets - Tickets;
             public int TotalTickets { get; set; }  // Original Ticket count
+
         }
 
         public void OnGet()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (User.Identity.IsAuthenticated)
+            {
+
+                FirstName = User.FindFirst("FirstName")?.Value ?? "User";
+                Role = User.FindFirst(ClaimTypes.Role)?.Value ?? "Guest";
+                Email = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+                Organization = User.FindFirst("Organization")?.Value ?? string.Empty;
+            }
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userId == null)
             {
@@ -73,5 +94,7 @@ namespace eventEase1._0.Pages
                 }
             }
         }
+
+
     }
 }

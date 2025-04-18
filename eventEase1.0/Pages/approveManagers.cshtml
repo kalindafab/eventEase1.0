@@ -1,0 +1,159 @@
+﻿@page
+@model eventEase1._0.Pages.approveManagersModel
+@{
+	Layout = "_layoutDashboard";
+	ViewData["Title"] = "eventEase - Manager Dashboard";
+}
+
+<head>
+    <title>@ViewData</title>
+    <style>
+        .table-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+
+            .table-data > div {
+                background: var(--light);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .table-data .head {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+                .table-data .head h3 {
+                    font-size: 18px;
+                    color: var(--dark);
+                }
+
+                .table-data .head i {
+                    font-size: 20px;
+                    color: var(--dark-grey);
+                    cursor: pointer;
+                }
+
+            .table-data table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+                .table-data table th {
+                    text-align: left;
+                    padding: 10px 0;
+                    border-bottom: 1px solid var(--grey);
+                    color: var(--dark-grey);
+                    font-weight: 500;
+                }
+
+                   .table-data table td {
+                    padding: 10px 0;
+                    border-bottom: 1px solid var(--grey);
+                    color: var(--dark);
+                }
+
+                   .table-data table tr:last-child td {
+                    border-bottom: none;
+                }
+
+                   .table-data table td img {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    margin-right: 10px;
+                    vertical-align: middle;
+                }
+
+                   .table-data table td p {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+
+                   .table-data table td .status {
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    font-size: 12px;
+                    font-weight: 500;
+                }
+
+                    .table-data table td .status.completed {
+                     background: var(--light-success);
+                     color: var(--success);
+                    }
+
+                       .table-data table td .status.pending {
+                        background: var(--light-warning);
+                        color: var(--warning);
+                    }
+
+                       .table-data table td .status.process {
+                        background: var(--light-primary);
+                        color: var(--primary);
+                    }
+    </style>
+</head>
+
+<nav>
+    <!-- Left side elements -->
+    <div class="nav-left">
+        <i class='bx bx-menu'></i>
+        <div class="welcome-message">
+            <span>Welcome, <strong>@Model.FirstName</strong></span>
+
+        </div>
+        <form class="nav-search" action=" ">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+            </div>
+        </form>
+    </div>
+
+</nav>
+
+<div class="table-data">
+    <div>
+        <div class="head">
+            <h3>Pending Approvals</h3>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Organisation</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var manager in Model.PendingManagers)
+                {
+                
+                    <tr>
+                        <td>@manager.FirstName @manager.LastName</td>
+                        <td>@manager.Email</td>
+                        <td>@manager.Organization</td>
+                        <td>
+                            <form method="post" style="display: inline; ">
+                                <input type="hidden" name="managerId" value="@manager.Id">
+                                <button type="submit" asp-page-handler="ApproveManager" class="btn btn-outline-success">Approve</button>
+                            </form>
+                            <form method="post" style="display: inline; margin-left: 5px; ">
+                                <input type="hidden" name="managerId" value="@manager.Id">
+                                <button type="submit" asp-page-handler="RejectManager" class="btn btn-outline-warning">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+        </table>
+    </div>
+</div>
