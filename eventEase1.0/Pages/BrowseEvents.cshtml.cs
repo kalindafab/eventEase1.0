@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 
-namespace eventEase1._0.Pages.User
+namespace eventEase1._0.Pages
 {
     public class BrowseEventsModel : PageModel
     {
