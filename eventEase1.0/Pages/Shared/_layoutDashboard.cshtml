@@ -1,7 +1,5 @@
-﻿
-@{
+﻿@{
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +9,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <title>Dashboard</title>
+    <title>EventEase - Dashboard</title>
     <style>
         /* Main CSS */
         :root {
@@ -39,7 +38,6 @@
             background: var(--grey);
             overflow-x: hidden;
         }
-
         /* SIDEBAR */
         #sidebar {
             position: fixed;
@@ -379,7 +377,6 @@
             gap: 20px;
         }
 
-
         .nav-search {
             margin-left: auto;
         }
@@ -387,18 +384,15 @@
         .form-control {
             border-radius: 5px;
         }
-
     </style>
 </head>
 <body>
     <!-- SIDEBAR -->
-
     <section id="sidebar">
         <a href="#" class="brand">
             <i class='bx bxs-smile'></i>
             <span class="text">EventEase</span>
         </a>
-
         <ul class="side-menu top">
             <!-- Dashboard - visible to all authenticated users -->
             <li class="active">
@@ -407,7 +401,6 @@
                     <span class="text">Dashboard</span>
                 </a>
             </li>
-
             <!-- Admin Permissions -->
             @if (User.HasClaim("Permission", "CanApproveManagers"))
             {
@@ -418,7 +411,6 @@
                     </a>
                 </li>
             }
-
             @if (User.HasClaim("Permission", "CanManageUsers"))
             {
                 <li>
@@ -428,7 +420,6 @@
                     </a>
                 </li>
             }
-
             @if (User.HasClaim("Permission", "CanManageSettings"))
             {
                 <li>
@@ -438,7 +429,6 @@
                     </a>
                 </li>
             }
-
             <!-- Event Manager Permissions -->
             @if (User.HasClaim("Permission", "CanCreateEvents"))
             {
@@ -449,7 +439,6 @@
                     </a>
                 </li>
             }
-
             @if (User.HasClaim("Permission", "CanViewOwnEvents"))
             {
                 <li>
@@ -459,7 +448,6 @@
                     </a>
                 </li>
             }
-
             @if (User.HasClaim("Permission", "CanViewTicketSales"))
             {
                 <li>
@@ -469,7 +457,6 @@
                     </a>
                 </li>
             }
-
             <!-- Regular User Permissions -->
             @if (User.HasClaim("Permission", "CanBrowseEvents"))
             {
@@ -480,7 +467,6 @@
                     </a>
                 </li>
             }
-
             @if (User.HasClaim("Permission", "CanViewOwnTickets"))
             {
                 <li>
@@ -491,7 +477,6 @@
                 </li>
             }
         </ul>
-
         <!-- Common items for all users -->
         <ul class="side-menu">
             @if (User.HasClaim("Permission", "CanManageProfile"))
@@ -512,16 +497,12 @@
         </ul>
     </section>
     <!-- CONTENT -->
-
     <main>
         <section id="content">
             @RenderBody()
         </section>
     </main>
-
     <script>
-
-
         // Dark mode toggle (just UI, no actual dark mode implementation)
         document.getElementById('switch-mode').addEventListener('change', function() {
             if(this.checked) {
@@ -530,7 +511,6 @@
                 document.body.classList.remove('dark');
             }
         });
-
         // Simple todo interaction
         document.querySelectorAll('.todo-list li').forEach(item => {
             item.addEventListener('click', function(e) {

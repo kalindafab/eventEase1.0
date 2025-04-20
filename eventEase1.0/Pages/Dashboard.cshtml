@@ -3,169 +3,24 @@
 @{
     Layout = "_layoutDashboard";
     ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "EventEase - Dashboard";
 }
 
 <!-- SIDEBAR -->
-    <!-- NAVBAR -->
-    <nav>
-        <!-- Left side elements -->
-        <div class="nav-left">
-            <i class='bx bx-menu'></i>
-            <div class="welcome-message">
-                <span>Welcome, <strong>@Model.FirstName</strong></span>
-       
-<<<<<<< HEAD
-    </style>
-</head>
-<body>
-    <!-- SIDEBAR -->
-    
-    <section id="sidebar">
-        <a href="#" class="brand">
-            <i class='bx bxs-smile'></i>
-            <span class="text">EventEase</span>
-        </a>
+<!-- NAVBAR -->
+<nav>
+    <!-- Left side elements -->
+    <div class="nav-left">
+        <i class='bx bx-menu'></i>
+        <div class="welcome-message">
+            <span>Welcome, <strong>@Model.FirstName</strong></span>
 
-        <ul class="side-menu top">
-            <!-- Dashboard - visible to all authenticated users -->
-            <li class="active">
-                <a href="/Dashboard">
-                    <i class='bx bxs-dashboard'></i>
-                    <span class="text">Dashboard</span>
-                </a>
-            </li>
-
-            <!-- Admin Permissions -->
-            @if (User.HasClaim("Permission", "CanApproveManagers"))
-            {
-                <li>
-                    <a href="/Admin/ApproveManagers">
-                        <i class='bx bxs-user-check'></i>
-                        <span class="text">Approve Managers</span>
-                    </a>
-                </li>
-            }
-
-            @if (User.HasClaim("Permission", "CanManageUsers"))
-            {
-                <li>
-                    <a href="/Admin/Users">
-                        <i class='bx bxs-group'></i>
-                        <span class="text">Manage Users</span>
-                    </a>
-                </li>
-            }
-
-            @if (User.HasClaim("Permission", "CanManageSettings"))
-            {
-                <li>
-                    <a href="/Admin/Settings">
-                        <i class='bx bxs-cog'></i>
-                        <span class="text">System Settings</span>
-                    </a>
-                </li>
-            }
-
-            <!-- Event Manager Permissions -->
-            @if (User.HasClaim("Permission", "CanCreateEvents"))
-            {
-                <li>
-                    <a href="/Manager/CreateEvent">
-                        <i class='bx bxs-calendar-plus'></i>
-                        <span class="text">Create Event</span>
-                    </a>
-                </li>
-            }
-
-            @if (User.HasClaim("Permission", "CanViewOwnEvents"))
-            {
-                <li>
-                    <a href="/Manager/MyEvents">
-                        <i class='bx bxs-calendar'></i>
-                        <span class="text">My Events</span>
-                    </a>
-                </li>
-            }
-
-            @if (User.HasClaim("Permission", "CanViewTicketSales"))
-            {
-                <li>
-                    <a href="/Manager/Tickets">
-                        <i class='bx bxs-ticket'></i>
-                        <span class="text">Ticket Sales</span>
-                    </a>
-                </li>
-            }
-
-            <!-- Regular User Permissions -->
-            @if (User.HasClaim("Permission", "CanBrowseEvents"))
-            {
-                <li>
-                    <a href="/User/BrowseEvents">
-                        <i class='bx bxs-calendar-event'></i>
-                        <span class="text">Browse Events</span>
-                    </a>
-                </li>
-            }
-
-            @if (User.HasClaim("Permission", "CanViewOwnTickets"))
-            {
-                <li>
-                    <a href="/User/MyTickets">
-                        <i class='bx bxs-ticket'></i>
-                        <span class="text">My Tickets</span>
-                    </a>
-                </li>
-            }
-        </ul>
-
-        <!-- Common items for all users -->
-        <ul class="side-menu">
-            @if (User.HasClaim("Permission", "CanManageProfile"))
-            {
-                <li>
-                    <a href="/Account/Settings">
-                        <i class='bx bxs-cog'></i>
-                        <span class="text">Settings</span>
-                    </a>
-                </li>
-            }
-            <li>
-                <a href="/Account/Logout" class="logout">
-                    <i class='bx bxs-log-out-circle'></i>
-                    <span class="text">Logout</span>
-                </a>
-            </li>
-        </ul>
-    </section>
-    <!-- SIDEBAR -->
-    <!-- CONTENT -->
-    <section id="content">
-        <!-- NAVBAR -->
-        <nav>
-            <!-- Left side elements -->
-            <div class="nav-left">
-                <i class='bx bx-menu'></i>
-                <div class="welcome-message">
-                    <span>Welcome, <strong>@Model.FirstName</strong></span>
-                </div>
-                <form class="nav-search" action="#">
-                    <div class="form-input">
-                        <input type="search" placeholder="Search...">
-                        <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-                    </div>
-                </form>
-=======
->>>>>>> 0fe66a5f3cbe42fa51673b20cf4f9c28b91249af
-            </div>
-            <form class="nav-search" action="#">
-                <div class="form-input">
-                    <input type="search" placeholder="Search...">
-                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-                </div>
-            </form>
         </div>
-
-    </nav>    
-                               
-
+        <form class="nav-search" action="#">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+            </div>
+        </form>
+    </div>
+</nav>
